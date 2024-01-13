@@ -1,0 +1,1 @@
+Quick python tool to stitch together PNG images in a file. Made to combine lots of individual files into tilesets. May expand with further features for dealing with tilesets.

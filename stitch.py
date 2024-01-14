@@ -11,15 +11,17 @@ from PIL import Image
 def stitchDir(path):
   files = os.listdir(path)
   fileCount = len(files)
-  firstImage = Image.open(path + '/' + files[0])
+  hasOut = 'out.png' in files
+  firstImage = Image.open(path + '/' + files[0]).convert('RGBA')
   left = 0
   top = 0
   bottom = firstImage.height
-  right = firstImage.width * fileCount
+  right = firstImage.width * (fileCount if not hasOut else fileCount - 1)
   stitchedImage = firstImage.crop((left, top, right, bottom))
   for i in range(1, fileCount):
-    img = Image.open(path + '/' + files[i])
-    stitchedImage.paste(img, (firstImage.width * i, 0))
+    if not files[i] == 'out.png':
+      img = Image.open(path + '/' + files[i]).convert('RGBA')
+      stitchedImage.paste(img, (firstImage.width * i, 0), img)
   stitchedImage.save(path + '/' + 'out.png')
 
 if __name__ == '__main__':
